@@ -15,4 +15,17 @@ model User {
   id        BigInt   @id @default(autoincrement())
   discordId BigInt?
   username  String
+
+  kvEntries KeyValue[]
+}
+
+model KeyValue {
+  userId    BigInt
+  key       String
+  value     String
+  updatedAt DateTime    @updatedAt
+
+  @@id([userId, key])
+
+  user User @relation(fields: [userId], references: [id])
 }
