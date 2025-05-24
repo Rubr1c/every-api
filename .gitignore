@@ -4,8 +4,7 @@ npm-debug.log*
 yarn-error.log*
 yarn-debug.log*
 package-lock.json
-# If you're using pnpm, add:
-# pnpm-lock.yaml
+pnpm-lock.yaml
 
 # TypeScript
 dist/
@@ -46,3 +45,6 @@ coverage/
 # Build output
 build/ 
 /src/generated/prisma
+
+# ENV
+.env*
