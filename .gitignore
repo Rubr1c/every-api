@@ -45,3 +45,4 @@ coverage/
 
 # Build output
 build/ 
+/src/generated/prisma
