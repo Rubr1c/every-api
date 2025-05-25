@@ -11,7 +11,7 @@ export const createUserSchema = z.object({
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 
 export const userDTO = z.object({
-  id: z.bigint(),
+  id: z.number(),
   discordId: z.bigint().nullable(),
   username: z.string(),
 });

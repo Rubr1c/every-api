@@ -1,7 +1,7 @@
 import { prisma } from "../prisma";
 
 export async function kvSet(
-  userId: bigint,
+  userId: number,
   key: string,
   value: string,
 ): Promise<void> {
@@ -13,7 +13,7 @@ export async function kvSet(
 }
 
 export async function kvGet(
-  userId: bigint,
+  userId: number,
   key: string,
 ): Promise<string | null> {
   const record = await prisma.keyValue.findUnique({

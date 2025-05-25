@@ -12,7 +12,7 @@ datasource db {
 }
 
 model User {
-  id        BigInt   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   discordId BigInt?  @unique
   username  String
 
@@ -20,7 +20,7 @@ model User {
 }
 
 model KeyValue {
-  userId    BigInt
+  userId    Int
   key       String
   value     String
   updatedAt DateTime    @updatedAt
