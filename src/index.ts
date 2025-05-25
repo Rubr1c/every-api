@@ -1,1 +1,3 @@
-console.log("Hello, TypeScript!"); 
+import { startBot } from './bot';
+
+startBot(); 
