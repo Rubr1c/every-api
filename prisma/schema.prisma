@@ -13,7 +13,7 @@ datasource db {
 
 model User {
   id        BigInt   @id @default(autoincrement())
-  discordId BigInt?
+  discordId BigInt?  @unique
   username  String
 
   kvEntries KeyValue[]
