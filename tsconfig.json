@@ -19,9 +19,9 @@
     "skipLibCheck": true,
 
     "moduleResolution": "node",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     },
 
     "types": ["node", "@prisma/client"],
