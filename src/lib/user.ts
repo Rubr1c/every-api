@@ -12,8 +12,11 @@ export async function createUser(data: CreateUserInput): Promise<void> {
     });
   } catch (error: any) {
     // Check if it's a Prisma unique constraint violation
-    if (error.code === 'P2002' && error.meta?.target?.includes('discordId')) {
-      throw new AppError("A user with this Discord ID already exists", "CONFLICT");
+    if (error.code === "P2002" && error.meta?.target?.includes("discordId")) {
+      throw new AppError(
+        "A user with this Discord ID already exists",
+        "CONFLICT",
+      );
     }
     // Re-throw other errors
     throw error;
@@ -46,4 +49,15 @@ export async function getUserByDiscordId(id: bigint): Promise<UserDTO> {
   }
 
   return userDTO.parse(user);
+}
+
+export async function addUserXp(id: bigint): Promise<void> {
+  await prisma.user.update({
+    where: {
+      discordId: id,
+    },
+    data: {
+      level: { increment: 1 },
+    },
+  });
 }
