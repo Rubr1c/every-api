@@ -3,6 +3,7 @@ import { handlePing } from "./ping";
 import { getUser, newUser } from "./user";
 import { getKv, setKv } from "./kv";
 import { env, whitelist } from '@/../bot.config.json';
+import { handle_dev_cmd } from "./dev";
 
 export async function exec_cmd(
   cmd: string,
@@ -33,6 +34,7 @@ export async function exec_cmd(
             await message.reply("no access");
             return; 
         }
+        return await handle_dev_cmd(args.shift() ?? "", args, message);
     default:
       return;
   }
