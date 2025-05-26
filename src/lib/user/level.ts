@@ -1,6 +1,6 @@
-import { prisma } from "@/prisma"
+import { prisma } from "@/prisma";
 import type { LevelUpDTO } from "@/types/user";
-import { hasLeveledUp } from "@/utils/level.levelup";
+import { hasLeveledUp, levelFromXp, xpForLevel } from "@/utils/level.levelup";
 
 export async function incrementUserLevel(id: bigint): Promise<number> {
   const user = await prisma.user.update({
@@ -34,7 +34,7 @@ export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
 
 export async function dev_addXpToUser(
   id: bigint,
-  xpCount: number,
+  xpCount: bigint,
 ): Promise<LevelUpDTO> {
   const user = await prisma.user.update({
     where: {
@@ -50,4 +50,28 @@ export async function dev_addXpToUser(
   }
 
   return { leveledup: false };
+}
+
+export async function dev_setLevel(id: bigint, level: number): Promise<void> {
+  await prisma.user.update({
+    where: {
+      discordId: id,
+    },
+    data: {
+      level,
+      xp: xpForLevel(level),
+    },
+  });
+}
+
+export async function dev_setXp(id: bigint, xp: bigint): Promise<void> {
+  await prisma.user.update({
+    where: {
+      discordId: id,
+    },
+    data: {
+      xp,
+      level: levelFromXp(xp),
+    },
+  });
 }
