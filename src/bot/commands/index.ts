@@ -2,6 +2,7 @@ import { Message } from "discord.js";
 import { handlePing } from "./ping";
 import { getUser, newUser } from "./user";
 import { getKv, setKv } from "./kv";
+import { env, whitelist } from '@/../bot.config.json';
 
 export async function exec_cmd(
   cmd: string,
@@ -17,15 +18,21 @@ export async function exec_cmd(
       return await newUser(message);
     case "set":
         //TODO: make usage fn
-        if (args.length != 2) 
+        if (args.length !== 2) 
             return;
         
         return await setKv(args[0], args[1], message);
     case "get": 
         //TODO: make usage fn
-        if (args.length != 1) 
+        if (args.length !== 1) 
             return;
         return await getKv(args[0], message); 
+    case "dev":
+        if (!whitelist.includes(message.author.id) || env !== 'dev') {
+            //TODO: remove reply
+            await message.reply("no access");
+            return; 
+        }
     default:
       return;
   }
