@@ -51,13 +51,13 @@ export async function getUserByDiscordId(id: bigint): Promise<UserDTO> {
   return userDTO.parse(user);
 }
 
-export async function addUserXp(id: bigint): Promise<void> {
+export async function incrementUserXp(id: bigint): Promise<void> {
   await prisma.user.update({
     where: {
       discordId: id,
     },
     data: {
-      level: { increment: 1 },
+      xp: { increment: 1 },
     },
   });
 }

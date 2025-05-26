@@ -16,6 +16,7 @@ model User {
   discordId BigInt?  @unique
   username  String
   level     Int      @default(0)
+  xp        BigInt   @default(0)
 
   kvEntries KeyValue[]
 }

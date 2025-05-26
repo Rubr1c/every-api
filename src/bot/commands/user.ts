@@ -21,7 +21,7 @@ export async function newUser(message: Message): Promise<void> {
 export async function getUser(message: Message): Promise<void> {
   try {
       const user = await getUserByDiscordId(BigInt(message.author.id));
-    await message.reply(`${user.username} - ${user.level}`);
+    await message.reply(`${user.username} - [Level ${user.level} - ${user.xp} XP]`);
   } catch (err) {
     if (err instanceof AppError) {
       await message.reply(`[${err.statusCode}] ${err.message}`);

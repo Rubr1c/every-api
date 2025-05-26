@@ -2,7 +2,7 @@ import type { Message } from "discord.js";
 import { prefix } from "../config";
 import { exec_cmd } from "../commands";
 import { userLevelTimeouts } from "../level/levelManager";
-import { addUserXp } from "@/lib/user";
+import { incrementUserXp } from "@/lib/user";
 
 export async function handleMessageCreate(message: Message): Promise<void> {
   if (message.author.bot) return;
@@ -10,7 +10,7 @@ export async function handleMessageCreate(message: Message): Promise<void> {
   const prefixed = message.content.startsWith(prefix); 
 
   if (!userLevelTimeouts.isTimedout(message.author.id) && !prefixed) {
-    addUserXp(BigInt(message.author.id));
+    incrementUserXp(BigInt(message.author.id));
     userLevelTimeouts.timeout(message.author.id);
   }
 

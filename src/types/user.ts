@@ -15,6 +15,7 @@ export const userDTO = z.object({
   discordId: z.bigint().nullable(),
   username: z.string(),
   level: z.number(),
+  xp: z.bigint(),
 });
 
 export type UserDTO = z.infer<typeof userDTO>;
