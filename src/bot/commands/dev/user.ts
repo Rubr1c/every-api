@@ -1,4 +1,4 @@
-import { dev_addXpToUser } from "@/lib/user";
+import { dev_addXpToUser } from "@/lib/user/level";
 import type { Message } from "discord.js";
 
 export async function dev_addUserXp(xpCount: number, message: Message): Promise<void> {

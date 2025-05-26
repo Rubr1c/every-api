@@ -1,5 +1,5 @@
 import type { Message } from "discord.js";
-import { createUser, getUserByDiscordId } from "@/lib/user";
+import { createUser, getUserByDiscordId } from "@/lib/user/user";
 import { AppError } from "@/lib/error";
 
 export async function newUser(message: Message): Promise<void> {

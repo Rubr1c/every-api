@@ -1,8 +1,8 @@
 import type { Message } from "discord.js";
-import { prefix } from "../config";
+import { prefix } from "@/../bot.config.json";
 import { exec_cmd } from "../commands";
 import { userLevelTimeouts } from "../level/levelManager";
-import { incrementUserXp } from "@/lib/user";
+import { incrementUserXp } from "@/lib/user/level";
 
 export async function handleMessageCreate(message: Message): Promise<void> {
   if (message.author.bot) return;

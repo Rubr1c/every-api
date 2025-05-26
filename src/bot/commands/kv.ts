@@ -1,5 +1,5 @@
 import type { Message } from "discord.js";
-import { getUserByDiscordId } from '@/lib/user'
+import { getUserByDiscordId } from '@/lib/user/user'
 import { kvGet, kvSet } from "@/lib/kv";
 
 export async function setKv(key: string, value: string, message: Message): Promise<void> {
