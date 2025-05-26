@@ -1,7 +1,8 @@
 import { prisma } from "@/prisma";
-import type { CreateUserInput, UserDTO } from "@/types/user";
+import type { CreateUserInput, UserDTO, LevelUpDTO } from "@/types/user";
 import { userDTO } from "@/types/user";
 import { AppError } from "./error";
+import { hasLeveledUp } from "@/global/level.levelup";
 
 export async function createUser(data: CreateUserInput): Promise<void> {
   try {
@@ -51,8 +52,21 @@ export async function getUserByDiscordId(id: bigint): Promise<UserDTO> {
   return userDTO.parse(user);
 }
 
-export async function incrementUserXp(id: bigint): Promise<void> {
-  await prisma.user.update({
+export async function incrementUserLevel(id: bigint): Promise<number> {
+  const user = await prisma.user.update({
+    where: {
+      discordId: id,
+    },
+    data: {
+      level: { increment: 1 },
+    },
+  });
+
+  return user.level;
+}
+
+export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
+  const user = await prisma.user.update({
     where: {
       discordId: id,
     },
@@ -60,4 +74,10 @@ export async function incrementUserXp(id: bigint): Promise<void> {
       xp: { increment: 1 },
     },
   });
-}
+
+  if (hasLeveledUp(user.xp, user.level)) {
+    return { leveledup: true, level: user.level++};
+  }
+
+  return { leveledup: false };
+} 

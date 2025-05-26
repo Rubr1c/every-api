@@ -10,7 +10,12 @@ export async function handleMessageCreate(message: Message): Promise<void> {
   const prefixed = message.content.startsWith(prefix); 
 
   if (!userLevelTimeouts.isTimedout(message.author.id) && !prefixed) {
-    incrementUserXp(BigInt(message.author.id));
+    const userLevel = await incrementUserXp(BigInt(message.author.id));
+
+    if (userLevel.leveledup) {
+        message.reply(`Leveled up to level ${userLevel.level}`)
+    }
+
     userLevelTimeouts.timeout(message.author.id);
   }
 

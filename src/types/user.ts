@@ -19,3 +19,8 @@ export const userDTO = z.object({
 });
 
 export type UserDTO = z.infer<typeof userDTO>;
+
+export type LevelUpDTO = {
+    leveledup: boolean;
+    level?: number;
+}
