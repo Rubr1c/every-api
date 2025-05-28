@@ -1,4 +1,3 @@
-import { User } from "@/generated/prisma";
 import { z } from "zod";
 
 export const createUserSchema = z.object({

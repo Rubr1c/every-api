@@ -19,6 +19,18 @@ model User {
   xp        BigInt   @default(0)
 
   kvEntries KeyValue[]
+  notes     Note[]
+}
+
+model Note {
+  userId    Int 
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+
+  @@id([userId, title])
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model KeyValue {
