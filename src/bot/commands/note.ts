@@ -2,6 +2,12 @@ import { EmbedBuilder, type Message } from "discord.js";
 import { createNote, getNoteByTitle } from "@/lib/note";
 import { getUserByDiscordId } from "@/lib/user/user";
 
+export interface NoteParams {
+  t?: string[];
+  c?: string[];
+  [flag: string]: string[] | undefined;
+}
+
 export async function newNote(
   title: string,
   content: string,
