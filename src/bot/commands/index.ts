@@ -4,6 +4,7 @@ import { getUser, newUser } from "./user";
 import { getKv, setKv } from "./kv";
 import { env, whitelist } from '@/../bot.config.json';
 import { handle_dev_cmd } from "./dev";
+import { getNote, newNote } from "./note";
 
 export async function exec_cmd(
   cmd: string,
@@ -28,6 +29,13 @@ export async function exec_cmd(
         if (args.length !== 1) 
             return;
         return await getKv(args[0], message); 
+    case "note":
+        return await newNote(args[0], args.slice(1).join(' '), message);
+    case "notes":
+        //TODO: make fetch all notes
+        if (args.length !== 1) 
+            return;
+        return await getNote(args[0], message);
     case "dev":
         if (!whitelist.includes(message.author.id) || env !== 'dev') {
             //TODO: remove reply
