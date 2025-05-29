@@ -51,7 +51,7 @@ export async function exec_cmd(
       if (args.length !== 1) return;
       return await getKv(args[0], message);
     case "note":
-      const params = getParams(args) as NoteParams;
+      const params: NoteParams = getParams(args);
       const title = params.t?.join(" ");
       const content = params.c?.join(" ");
 

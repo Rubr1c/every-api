@@ -1,11 +1,20 @@
 import type { CreateNoteInput, NoteDTO } from "@/types/note";
 import { noteDTO } from "@/types/note";
 import { prisma } from "@/prisma";
+import { AppError } from "@/lib/error";
 
 export async function createNote(data: CreateNoteInput): Promise<void> {
-  await prisma.note.create({
-    data: { ...data },
-  });
+  try {
+    await prisma.note.create({
+      data: { ...data },
+    });
+  } catch (error: any) {
+    if (error.code === "P2002" && error.meta?.target?.includes("title")) {
+      throw new AppError("A note with this title already exists", "CONFLICT");
+    }
+
+    throw error;
+  }
 }
 
 export async function getNoteByTitle(
@@ -15,6 +24,10 @@ export async function getNoteByTitle(
   const note = await prisma.note.findUnique({
     where: { userId_title: { userId, title } },
   });
+
+  if (!note) {
+    throw new AppError("Note not found", "NOT_FOUND");
+  }
 
   return note;
 }
