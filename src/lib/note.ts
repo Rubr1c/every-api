@@ -40,6 +40,29 @@ export async function getAllUserNotes(userId: number): Promise<NoteDTO[]> {
   return notes.map((note) => noteDTO.parse(note));
 }
 
+export async function getUserNoteCount(userId: number): Promise<number> {
+  return await prisma.note.count({
+    where: { userId },
+  });
+}
+
+export async function getUserNotes(
+  userId: number,
+  page: number = 1,
+  pageSize: number = 10,
+): Promise<NoteDTO[]> {
+  const notes = await prisma.note.findMany({
+    where: { userId },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return notes.map((note) => noteDTO.parse(note));
+}
+
 export async function deleteUserNote(
   userId: number,
   title: string,
