@@ -69,5 +69,3 @@ export async function deleteUserNote(
 ): Promise<void> {
   await prisma.note.delete({ where: { userId_title: { userId, title } } });
 }
-
-//TODO: edit?

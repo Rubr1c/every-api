@@ -4,7 +4,7 @@ import { getUser, newUser } from "./user";
 import { getKv, setKv } from "./kv";
 import { env, whitelist } from "@/../bot.config.json";
 import { handle_dev_cmd } from "./dev";
-import { getNote, getNotesSum, newNote, NoteParams } from "./note";
+import { deleteNote, getNote, getNotesSum, newNote, NoteParams } from "./note";
 
 type FlagKey<A extends readonly string[]> = {
   [P in A[number]]: P extends `-${infer K}` ? K : never;
@@ -51,6 +51,15 @@ export async function exec_cmd(
       if (args.length !== 1) return;
       return await getKv(args[0], message);
     case "note":
+      if (args[0] === "-d") {
+        args.shift();
+
+        if (args.length < 1) {
+            await message.reply("Title Needed")
+            return;
+        }
+        return await deleteNote(args.join(" "), message);
+    }
       const params: NoteParams = getParams(args);
       const title = params.t?.join(" ");
       const content = params.c?.join(" ");

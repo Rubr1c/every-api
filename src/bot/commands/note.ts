@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import {
   createNote,
+  deleteUserNote,
   getNoteByTitle,
   getUserNoteCount,
   getUserNotes,
@@ -70,6 +71,23 @@ export async function getNote(title: string, message: Message): Promise<void> {
       await message.reply(`[${err.statusCode}] ${err.message}`);
     } else {
       await message.reply(`Error fetching note`);
+    }
+  }
+}
+
+export async function deleteNote(
+  title: string,
+  message: Message,
+): Promise<void> {
+  const { id } = await getUserByDiscordId(BigInt(message.author.id));
+  try {
+    await deleteUserNote(id, title);
+    await message.reply("Note deleted!");
+  } catch (err) {
+    if (err instanceof AppError) {
+      await message.reply(`[${err.statusCode}] ${err.message}`);
+    } else {
+      await message.reply(`Error deleting note`);
     }
   }
 }
