@@ -106,7 +106,7 @@ export async function dev_addXpToUser(
  * @param level
  *   Level to set user at (number).
  * @returns
- *   void.
+ *   Promise<void>.
  */
 export async function dev_setLevel(id: bigint, level: number): Promise<void> {
   await prisma.user.update({
@@ -128,7 +128,7 @@ export async function dev_setLevel(id: bigint, level: number): Promise<void> {
  * @param xp
  *   Xp to set user at (bigint).
  * @returns
- *   void.
+ *   Promise<void>.
  */
 export async function dev_setXp(id: bigint, xp: bigint): Promise<void> {
   await prisma.user.update({

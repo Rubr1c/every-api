@@ -27,7 +27,7 @@ import { AppError } from "@/lib/error";
  * @throws
  *   AppError with CONFLICT status code if user with discordId already exists.
  * @returns
- *   void.
+ *   Promise<void>.
  */
 export async function createUser(data: CreateUserInput): Promise<void> {
   try {

@@ -23,7 +23,7 @@ import { decrypt, encrypt } from "./encryption";
  * @param data
  *   Object consisting of `userId` (number), `key` (string), `value` (string), `isEncrypted` (boolean).
  * @returns
- *   void.
+ *   Promise<void>.
  */
 export async function kvSet(data: StoreKvInput): Promise<void> {
   let value: string | null = null;

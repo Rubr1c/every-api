@@ -28,7 +28,7 @@ import { AppError } from "@/lib/error";
  * @throws
  *   AppError with CONFLICT status code if note with same userId and title exist.
  * @returns
- *   void.
+ *   Promise<void>.
  */
 export async function createNote(data: CreateNoteInput): Promise<void> {
   try {
@@ -93,13 +93,14 @@ export async function getAllUserNotes(userId: number): Promise<NoteDTO[]> {
  * @param userId
  *   Target user id (number).
  * @returns
- *   count of user notes.
+ *   Count of user notes.
  */
 export async function getUserNoteCount(userId: number): Promise<number> {
   return await prisma.note.count({
     where: { userId },
   });
 }
+
 /**
  * Gets user notes pagenated.
  *
@@ -137,7 +138,7 @@ export async function getUserNotes(
  * @param title
  *   Target note title (string).
  * @returns
- *   void.
+ *   Promise<void>.
  */
 export async function deleteUserNote(
   userId: number,
