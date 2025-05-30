@@ -38,6 +38,7 @@ model KeyValue {
   key       String
   value     String
   updatedAt DateTime    @updatedAt
+  isEncrypted Boolean   @default(false)
 
   @@id([userId, key])
 

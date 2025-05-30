@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { handlePing } from "./ping";
 import { getUser, newUser } from "./user";
-import { getKv, setKv } from "./kv";
+import { getKv, KeyValueParams, setKv } from "./kv";
 import { env, whitelist } from "@/../bot.config.json";
 import { handle_dev_cmd } from "./dev";
 import { deleteNote, getNote, getNotesSum, newNote, NoteParams } from "./note";
@@ -43,9 +43,8 @@ export async function exec_cmd(
       return await newUser(message);
     case "set":
       //TODO: make usage fn
-      if (args.length !== 2) return;
-
-      return await setKv(args[0], args[1], message);
+      const kvParams: KeyValueParams = getParams(args);
+      return await setKv(args[0], args[1], kvParams.e ? true : false, message);
     case "get":
       //TODO: make usage fn
       if (args.length !== 1) return;

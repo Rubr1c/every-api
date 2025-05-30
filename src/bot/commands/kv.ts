@@ -1,27 +1,40 @@
 import type { Message } from "discord.js";
-import { getUserByDiscordId } from '@/lib/user/user'
+import { getUserByDiscordId } from "@/lib/user/user";
 import { kvGet, kvSet } from "@/lib/kv";
 
-export async function setKv(key: string, value: string, message: Message): Promise<void> {
-    const userId = message.author.id;
-
-    const user = await getUserByDiscordId(BigInt(userId)); 
-
-    await kvSet(user.id, key, value);
-
-    await message.reply(`${key} was set`);
+export interface KeyValueParams {
+  e?: [];
+  [flag: string]: string[] | undefined;
 }
 
-export async function getKv(key: string | null, message: Message): Promise<void> {
-    if (!key) {
-        return;
-    }
+export async function setKv(
+  key: string,
+  value: string,
+  encrypt: boolean,
+  message: Message,
+): Promise<void> {
+  const userId = message.author.id;
 
-    const userId = message.author.id;
+  const user = await getUserByDiscordId(BigInt(userId));
 
-    const user = await getUserByDiscordId(BigInt(userId)); 
+  await kvSet({ userId: user.id, key, value, isEncrypted: encrypt});
 
-    const value = await kvGet(user.id, key);
+  await message.reply(`${key} was set`);
+}
 
-    message.reply(value ?? `${key} not found`);
+export async function getKv(
+  key: string | null,
+  message: Message,
+): Promise<void> {
+  if (!key) {
+    return;
+  }
+
+  const userId = message.author.id;
+
+  const user = await getUserByDiscordId(BigInt(userId));
+
+  const value = await kvGet(user.id, key);
+
+  message.reply(value ?? `${key} not found`);
 }
