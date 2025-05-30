@@ -1,0 +1,20 @@
+{
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "expand", 
+  "out": "./docs",
+  "name": "Every API Documentation",
+  "includeVersion": true,
+  "excludeExternals": true,
+  "exclude": ["**/*.test.ts", "**/node_modules/**"],
+  "readme": "none",
+  "sort": ["source-order"],
+  "categorizeByGroup": false,
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "Bot Commands",
+    "Library Functions", 
+    "Types",
+    "*",
+    "Other"
+  ]
+} 

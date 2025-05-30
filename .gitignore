@@ -46,6 +46,9 @@ coverage/
 build/ 
 src/generated/
 
+# Documentation
+docs/
+
 # ENV
 .env*
 
