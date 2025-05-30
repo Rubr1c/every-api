@@ -1,7 +1,35 @@
+/**
+ * @module lib/user/level
+ *
+ * Service functions to update user level.
+ * 
+ *
+ * Exports:
+ *  - incrementUserLevel(id)
+ *  - incrementUserXp(id)
+ *  - dev_addXpToUser(id, xpCount)
+ *  - dev_setLevel(id, level)
+ *  - dev_setXp(id, xp)
+ *
+ * Uses bigint for xp and number for level.
+ * functions marked with dev usally used for admin/dev users.
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
 import { prisma } from "@/prisma";
 import type { LevelUpDTO } from "@/types/user";
-import { hasLeveledUp, levelFromXp, xpForLevel } from "@/utils/level.levelup";
+import { hasLeveledUp, levelFromXp, xpForLevel } from "@/utils/levels";
 
+/**
+ * Increments user level.
+ *
+ * @param id
+ *   Target user discordId (bigint).
+ * @returns
+ *   New incremented level (number).
+ */
 export async function incrementUserLevel(id: bigint): Promise<number> {
   const user = await prisma.user.update({
     where: {
@@ -15,6 +43,14 @@ export async function incrementUserLevel(id: bigint): Promise<number> {
   return user.level;
 }
 
+/**
+ * Increments user xp.
+ *
+ * @param id
+ *   Target user discordId (bigint).
+ * @returns
+ *   An object that contains if the user has leveled up and to what level.
+ */
 export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
   const user = await prisma.user.update({
     where: {
@@ -32,6 +68,16 @@ export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
   return { leveledup: false };
 }
 
+/**
+ * Adds xp amount to user.
+ *
+ * @param id
+ *   Target user discordId (bigint).
+ * @param xpCount
+ *   Amount of xp to be added (bigint),
+ * @returns
+ *   An object that contains if the user has leveled up and to what level.
+ */
 export async function dev_addXpToUser(
   id: bigint,
   xpCount: bigint,
@@ -52,6 +98,16 @@ export async function dev_addXpToUser(
   return { leveledup: false };
 }
 
+/**
+ * Sets level for user.
+ *
+ * @param id
+ *   Target user discordId (bigint).
+ * @param level
+ *   Level to set user at (number).
+ * @returns
+ *   void.
+ */
 export async function dev_setLevel(id: bigint, level: number): Promise<void> {
   await prisma.user.update({
     where: {
@@ -64,6 +120,16 @@ export async function dev_setLevel(id: bigint, level: number): Promise<void> {
   });
 }
 
+/**
+ * Sets xp for user.
+ *
+ * @param id
+ *   Target user discordId (bigint).
+ * @param xp
+ *   Xp to set user at (bigint).
+ * @returns
+ *   void.
+ */
 export async function dev_setXp(id: bigint, xp: bigint): Promise<void> {
   await prisma.user.update({
     where: {

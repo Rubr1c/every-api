@@ -1,12 +1,37 @@
+/**
+ * @module lib/encryption
+ *
+ * Functions to encrypt and dycrypt data.
+ * 
+ *
+ * Exports:
+ *  - encrypt(text)
+ *  - decrypt(data)
+ *
+ * Uses aes-256-cbc.
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const algorithm = 'aes-256-cbc';
+// Normalize to 32 bytes
 const key = crypto.createHash('sha256').update(process.env.ENCRYPTION_KEY!).digest();
 const ivLength = 16;
 
+/**
+ * Encrypts text using aes-256-cbc.
+ *
+ * @param text
+ *   Text to encrypt (string).
+ * @returns
+ *   Encrypted text formatted as iv:encrypted.
+ */
 export function encrypt(text: string): string {
   const iv = crypto.randomBytes(ivLength);
   const cipher = crypto.createCipheriv(algorithm, key, iv);
@@ -18,6 +43,14 @@ export function encrypt(text: string): string {
   return iv.toString('hex') + ':' + encrypted.toString('hex');
 }
 
+/**
+ * Decrypts text using aes-256-cbc.
+ *
+ * @param data
+ *   Encrypted data to decrypt (string).
+ * @returns
+ *   Decrypted text (string).
+ */
 export function decrypt(data: string): string {
   const [ivHex, encryptedHex] = data.split(':');
   const iv = Buffer.from(ivHex, 'hex');

@@ -1,7 +1,30 @@
+/**
+ * @module lib/kv
+ *
+ * Service functions for key value store
+ *
+ * Exports:
+ *  - kvSet(data)
+ *  - kvGet(userId, key)
+ *
+ * Has option to encrypt value
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
 import type { StoreKvInput } from "@/types/kv";
 import { prisma } from "../prisma";
 import { decrypt, encrypt } from "./encryption";
 
+/**
+ * Upserts a key to a value.
+ *
+ * @param data
+ *   Object consisting of `userId` (number), `key` (string), `value` (string), `isEncrypted` (boolean).
+ * @returns
+ *   void.
+ */
 export async function kvSet(data: StoreKvInput): Promise<void> {
   let value: string | null = null;
   if (data.isEncrypted) {
@@ -15,6 +38,16 @@ export async function kvSet(data: StoreKvInput): Promise<void> {
   });
 }
 
+/**
+ * Gets value from key.
+ *
+ * @param userId
+ *   Target user id (number).
+ * @param key
+ *   Target value's key (string).
+ * @returns
+ *   Value of key if found else `null`.
+ */
 export async function kvGet(
   userId: number,
   key: string,

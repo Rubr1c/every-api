@@ -1,8 +1,34 @@
+/**
+ * @module lib/user/user
+ *
+ * Service for main user functions.
+ *
+ * Exports:
+ *  - createUser(data)
+ *  - getUserById(id)
+ *  - getUserByDiscordId(id)
+ *
+ * Uses number for id and bigint for discordId.
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
 import { prisma } from "@/prisma";
 import type { CreateUserInput, UserDTO } from "@/types/user";
 import { userDTO } from "@/types/user";
 import { AppError } from "@/lib/error";
 
+/**
+ * Creates a new user.
+ *
+ * @param data
+ *   Object consisting of `username` (string) and `discordId` (bigint, optional).
+ * @throws
+ *   AppError with CONFLICT status code if user with discordId already exists.
+ * @returns
+ *   void.
+ */
 export async function createUser(data: CreateUserInput): Promise<void> {
   try {
     await prisma.user.create({
@@ -23,6 +49,16 @@ export async function createUser(data: CreateUserInput): Promise<void> {
   }
 }
 
+/**
+ * Get a user by id.
+ *
+ * @param id
+ *   Target user id (number).
+ * @throws
+ *   AppError with NOT_FOUND status code if user does not exist.
+ * @returns
+ *   UserDTO object to remove sensitive/unnecessary info.
+ */
 export async function getUserById(id: number): Promise<UserDTO> {
   const user = await prisma.user.findUnique({
     where: {
@@ -37,6 +73,16 @@ export async function getUserById(id: number): Promise<UserDTO> {
   return userDTO.parse(user);
 }
 
+/**
+ * Get a user by discordId.
+ *
+ * @param id
+ *   Target user discordId (bigint).
+ * @throws
+ *   AppError with NOT_FOUND status code if user does not exist.
+ * @returns
+ *   UserDTO object to remove sensitive info.
+ */
 export async function getUserByDiscordId(id: bigint): Promise<UserDTO> {
   const user = await prisma.user.findUnique({
     where: {
