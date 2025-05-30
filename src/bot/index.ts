@@ -1,9 +1,26 @@
+/**
+ * @module bot/index
+ *
+ * Main function to start discord bot
+ * 
+ * 
+ * Exports:
+ *  - startBot()
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
+
 import dotenv from "dotenv";
 dotenv.config();
 
 import { client } from "./client";
 import { handleMessageCreate } from "./events/messageCreate";
 
+/** 
+ * Start discord bot and register events
+ */
 export function startBot() {
 
   client.once("ready", () => {

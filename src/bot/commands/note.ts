@@ -1,3 +1,22 @@
+/**
+ * @module bot/commands/note
+ *
+ * Discord bot command handlers for note management operations.
+ *
+ * Exports:
+ *  - newNote(title, content, message)
+ *  - getNote(title, message)
+ *  - deleteNote(title, message)
+ *  - getNotesSum(message)
+ *  - NoteParams interface
+ *
+ * Provides commands to create, retrieve, delete, and list user notes
+ * with paginated display and Discord embed formatting.
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
 import {
   EmbedBuilder,
   ButtonBuilder,
@@ -22,6 +41,20 @@ export interface NoteParams {
   [flag: string]: string[] | undefined;
 }
 
+/**
+ * Creates a new note for the user who sent the message.
+ *
+ * @param title
+ *   The title of the note (string).
+ * @param content
+ *   The content/body of the note (string).
+ * @param message
+ *   The Discord message object containing user information.
+ * @throws
+ *   Handles AppError instances and replies with error messages.
+ * @returns
+ *   Promise<void> - Replies to the message with confirmation or error.
+ */
 export async function newNote(
   title: string,
   content: string,
@@ -54,6 +87,18 @@ export async function newNote(
   }
 }
 
+/**
+ * Retrieves and displays a note by title for the user who sent the message.
+ *
+ * @param title
+ *   The title of the note to retrieve (string).
+ * @param message
+ *   The Discord message object containing user information.
+ * @throws
+ *   Handles AppError instances and replies with error messages.
+ * @returns
+ *   Promise<void> - Replies with a Discord embed containing the note or error.
+ */
 export async function getNote(title: string, message: Message): Promise<void> {
   const { id } = await getUserByDiscordId(BigInt(message.author.id));
   if (id === null) {
@@ -75,6 +120,18 @@ export async function getNote(title: string, message: Message): Promise<void> {
   }
 }
 
+/**
+ * Deletes a note by title for the user who sent the message.
+ *
+ * @param title
+ *   The title of the note to delete (string).
+ * @param message
+ *   The Discord message object containing user information.
+ * @throws
+ *   Handles AppError instances and replies with error messages.
+ * @returns
+ *   Promise<void> - Replies to the message with confirmation or error.
+ */
 export async function deleteNote(
   title: string,
   message: Message,
@@ -92,6 +149,18 @@ export async function deleteNote(
   }
 }
 
+/**
+ * Displays a paginated list of all user notes with interactive navigation.
+ *
+ * Creates a Discord embed with pagination buttons that allows users to
+ * browse through their notes 10 at a time. Shows note titles and truncated
+ * content previews.
+ *
+ * @param message
+ *   The Discord message object containing user information.
+ * @returns
+ *   Promise<void> - Replies with a paginated embed and navigation buttons.
+ */
 export async function getNotesSum(message: Message) {
   const { id } = await getUserByDiscordId(BigInt(message.author.id));
   const maxPage = Math.ceil((await getUserNoteCount(id)) / 10);
