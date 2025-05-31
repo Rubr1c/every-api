@@ -15,9 +15,6 @@
  */
 
 import crypto from 'crypto';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const algorithm = 'aes-256-cbc';
 // Normalize to 32 bytes

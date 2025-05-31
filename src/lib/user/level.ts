@@ -18,7 +18,7 @@
  * @license MIT
  */
 
-import { prisma } from "@/prisma";
+import { prisma } from "@/global/prisma";
 import type { LevelUpDTO } from "@/types/user";
 import { hasLeveledUp, levelFromXp, xpForLevel } from "@/utils/levels";
 

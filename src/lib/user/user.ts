@@ -14,7 +14,7 @@
  * @license MIT
  */
 
-import { prisma } from "@/prisma";
+import { prisma } from "@/global/prisma";
 import type { CreateUserInput, UserDTO } from "@/types/user";
 import { userDTO } from "@/types/user";
 import { AppError } from "@/lib/error";

@@ -11,9 +11,11 @@
  * @license MIT
  */
 
-
-import dotenv from "dotenv";
+// For running bot standalone
+import dotenv from 'dotenv';
 dotenv.config();
+
+import '../global/env';
 
 import { client } from "./client";
 import { handleMessageCreate } from "./events/messageCreate";

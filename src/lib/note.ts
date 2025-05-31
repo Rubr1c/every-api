@@ -17,7 +17,7 @@
 
 import type { CreateNoteInput, NoteDTO } from "@/types/note";
 import { noteDTO } from "@/types/note";
-import { prisma } from "@/prisma";
+import { prisma } from "@/global/prisma";
 import { AppError } from "@/lib/error";
 
 /**

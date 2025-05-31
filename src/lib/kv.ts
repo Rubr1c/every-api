@@ -14,7 +14,7 @@
  */
 
 import type { StoreKvInput } from "@/types/kv";
-import { prisma } from "../prisma";
+import { prisma } from "../global/prisma";
 import { decrypt, encrypt } from "./encryption";
 
 /**
