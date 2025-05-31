@@ -38,6 +38,9 @@ type UsageValue = {
   usageMsg: (message: Message) => Promise<void>;
 };
 
+
+type UsageValueGroup = UsageValue | Record<string, UsageValue>;
+
 /**
  * Creates a `UsageValue` entry from a raw usage string.
  *
@@ -98,4 +101,4 @@ export const usage = {
     equal_xp: expand(`${prefix}dev =xp <number> - sets user xp`),
     equal_level: expand(`${prefix}dev =level <number> - sets user level`),
   },
-} as const;
+} as const satisfies Record<string, UsageValueGroup>;
