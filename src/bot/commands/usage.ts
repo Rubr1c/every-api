@@ -38,7 +38,6 @@ type UsageValue = {
   usageMsg: (message: Message) => Promise<void>;
 };
 
-
 type UsageValueGroup = UsageValue | Record<string, UsageValue>;
 
 /**
@@ -75,7 +74,9 @@ function expand(literal: string): UsageValue {
       await message.reply(literal);
     },
     usageMsg: async (message) => {
-      await message.reply(literal.substring(0, literal.indexOf("-")));
+      await message.reply(
+        "Usage: " + literal.substring(0, literal.lastIndexOf("-")),
+      );
     },
   };
 }

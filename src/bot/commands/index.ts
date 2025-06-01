@@ -2,8 +2,8 @@
  * @module bot/commands/index
  *
  * Index for handling commands.
- * 
- * 
+ *
+ *
  * Exports:
  *  - exec_cmd(cmd, args, message)
  *
@@ -18,6 +18,7 @@ import { getKv, KeyValueParams, setKv } from "./kv";
 import { env, whitelist } from "@/../bot.config.json";
 import { handle_dev_cmd } from "./dev";
 import { deleteNote, getNote, getNotesSum, newNote, NoteParams } from "./note";
+import { usage } from "./usage";
 
 /**
  * Extracts valid flag keys from a string array of CLI-like arguments.
@@ -98,38 +99,42 @@ export async function exec_cmd(
     case "newuser":
       return await newUser(message);
     case "set":
-      //TODO: make usage fn
+      if (args.length > 2) return await usage.set.usageMsg(message);
+
       const kvParams: KeyValueParams = getParams(args);
       return await setKv(args[0], args[1], kvParams.e ? true : false, message);
     case "get":
-      //TODO: make usage fn
-      if (args.length !== 1) return;
+      if (args.length !== 1) return await usage.get.usageMsg(message);
+
       return await getKv(args[0], message);
     case "note":
       if (args[0] === "-d") {
         args.shift();
 
         if (args.length < 1) {
-            await message.reply("Title Needed")
-            return;
+          return await usage.note_d.usageMsg(message);
         }
+
         return await deleteNote(args.join(" "), message);
-    }
+      }
       const params: NoteParams = getParams(args);
-      const title = params.t?.join(" ");
+      const cTitle = params.t?.join(" ");
       const content = params.c?.join(" ");
 
-      return await newNote(title ?? "", content ?? "", message);
+      if (!cTitle || !content) return await usage.note.usageMsg(message);
+
+      return await newNote(cTitle, content, message);
     case "notes":
-      //TODO: make fetch all notes
       if (args.length === 0) {
         return await getNotesSum(message);
       }
-      return await getNote(args.join(" ") ?? "", message);
+
+      const gTitle = args.join(" ");
+      if (!gTitle) return await usage.notes_t.usageMsg(message);
+
+      return await getNote(gTitle, message);
     case "dev":
       if (!whitelist.includes(message.author.id) || env !== "dev") {
-        //TODO: remove reply
-        await message.reply("no access");
         return;
       }
       return await handle_dev_cmd(args.shift() ?? "", args, message);

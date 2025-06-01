@@ -15,6 +15,7 @@
 
 import type { Message } from "discord.js";
 import { dev_addUserXp, dev_setUserLevel, dev_setUserXp } from "./user";
+import { usage } from "../usage";
 
 /**
  * Handles developer commands for user management and testing.
@@ -38,13 +39,14 @@ export async function handle_dev_cmd(
 ): Promise<void> {
   switch (cmd) {
     case "+xp":
-      if (args.length !== 1) return;
+      if (args.length !== 1) return await usage.dev.plus_xp.usageMsg(message);
       return await dev_addUserXp(BigInt(args[0]), message);
     case "=xp":
-      if (args.length !== 1) return;
+      if (args.length !== 1) return await usage.dev.equal_xp.usageMsg(message);
       return await dev_setUserXp(BigInt(args[0]), message);
     case "=level":
-      if (args.length !== 1) return;
+      if (args.length !== 1)
+        return await usage.dev.equal_level.usageMsg(message);
       return await dev_setUserLevel(+args[0], message);
     default:
       return;
