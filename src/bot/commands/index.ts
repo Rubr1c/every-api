@@ -99,9 +99,10 @@ export async function exec_cmd(
     case "newuser":
       return await newUser(message);
     case "set":
-      if (args.length > 2) return await usage.set.usageMsg(message);
-
       const kvParams: KeyValueParams = getParams(args);
+      if (args.length > 2 && !kvParams.e)
+        return await usage.set.usageMsg(message);
+
       return await setKv(args[0], args[1], kvParams.e ? true : false, message);
     case "get":
       if (args.length !== 1) return await usage.get.usageMsg(message);
