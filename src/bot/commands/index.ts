@@ -19,6 +19,7 @@ import { env, whitelist } from "@/../bot.config.json";
 import { handle_dev_cmd } from "./dev";
 import { deleteNote, getNote, getNotesSum, newNote, NoteParams } from "./note";
 import { usage } from "./usage";
+import { chat } from "@/ai/messageService";
 
 /**
  * Extracts valid flag keys from a string array of CLI-like arguments.
@@ -59,7 +60,7 @@ type FlagKey<A extends readonly string[]> = {
  * // }
  */
 function getParams<const A extends readonly string[]>(
-  args: A,
+  args: A
 ): Record<FlagKey<A>, string[]> {
   const result = {} as Record<FlagKey<A>, string[]>;
   let currentKey: FlagKey<A> | null = null;
@@ -89,7 +90,7 @@ function getParams<const A extends readonly string[]>(
 export async function exec_cmd(
   cmd: string,
   args: string[],
-  message: Message,
+  message: Message
 ): Promise<void> {
   switch (cmd) {
     case "ping":
@@ -134,6 +135,16 @@ export async function exec_cmd(
       if (!gTitle) return await usage.notes_t.usageMsg(message);
 
       return await getNote(gTitle, message);
+    case "chat":
+      const res = await chat({
+        message: args.join(" "),
+        stream: false,
+        discordId: message.author.id,
+      });
+      const responseText =
+        typeof res === "string" ? res.trim() : "Error: Invalid response";
+      await message.reply(responseText || "No response generated");
+      return;
     case "dev":
       if (!whitelist.includes(message.author.id) || env !== "dev") {
         return;

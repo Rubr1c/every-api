@@ -45,7 +45,7 @@ export async function handle_dev_cmd(
       if (args.length !== 1) return await usage.dev.equal_xp.usageMsg(message);
       return await dev_setUserXp(BigInt(args[0]), message);
     case "=level":
- )    if (args.length !== 1)
+      if (args.length !== 1)
         return await usage.dev.equal_level.usageMsg(message);
       return await dev_setUserLevel(+args[0], message);
     default:
