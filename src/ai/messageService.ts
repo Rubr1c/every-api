@@ -16,37 +16,28 @@ import { generateText, streamText } from "ai";
 import { getGeminiModel } from "./client";
 import { tools } from "./tool";
 import { DEFAULT_SYSTEM } from "./prompt";
+import { SingleMessage, singleMessageSchema } from "@/types/ai";
 
 /**
- * Start a single chat with model.
+ * Start a single message with model.
  *
  * @param data
- *   message, stream, userId, and discordId wanted 
+ *   message, stream, (userId or discordId) wanted
  * @returns
  *   Response text or stream.
  */
-export async function chat({
-  message,
-  stream,
-  userId,
-  discordId,
-}: {
-  //TODO: make type
-  message: string;
-  stream: boolean;
-  userId?: number;
-  discordId?: string;
-}): Promise<ReadableStream<string> | string> {
-  if (!discordId) {
-    //TODO: handle error
-    return "err";
-  }
+export async function msg(
+  data: SingleMessage
+): Promise<ReadableStream<string> | string> {
+  const req = singleMessageSchema.parse(data);
 
-  const userInfo = userId ? `User ID: ${userId}` : `Discord ID: ${discordId}`;
-  const fullPrompt = `${userInfo}\n\n${message}`;
+  const userInfo = req.userId
+    ? `User ID: ${req.userId}`
+    : `Discord ID: ${req.discordId}`;
+  const fullPrompt = `${userInfo}\n\n${msg}`;
 
-  if (stream) {
-    const res = await streamText({
+  if (req.stream) {
+    const res = streamText({
       system: DEFAULT_SYSTEM,
       model: getGeminiModel(),
       prompt: fullPrompt,

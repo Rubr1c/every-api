@@ -15,20 +15,12 @@
 import { z } from "zod";
 import { tool } from "ai";
 import { getUserByDiscordId, getUserById } from "@/lib/user/user";
+import { userIdSchema } from "@/types/ai";
 
 export const tools = {
   userDetails: tool({
     description: "fetch user details",
-    parameters: z.object({
-      userId: z
-        .number()
-        .optional()
-        .describe("user id for the user requesting if exists"),
-      discordId: z
-        .string()
-        .optional()
-        .describe("discord id for the user requesting if exists"),
-    }),
+    parameters: userIdSchema,
     execute: async ({ userId, discordId }) => {
       if (userId) {
         const user = await getUserById(userId);

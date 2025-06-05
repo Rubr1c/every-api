@@ -19,7 +19,7 @@ import { env, whitelist } from "@/../bot.config.json";
 import { handle_dev_cmd } from "./dev";
 import { deleteNote, getNote, getNotesSum, newNote, NoteParams } from "./note";
 import { usage } from "./usage";
-import { chat } from "@/ai/messageService";
+import { msg } from "@/ai/messageService";
 
 /**
  * Extracts valid flag keys from a string array of CLI-like arguments.
@@ -136,7 +136,7 @@ export async function exec_cmd(
 
       return await getNote(gTitle, message);
     case "chat":
-      const res = await chat({
+      const res = await msg({
         message: args.join(" "),
         stream: false,
         discordId: message.author.id,
