@@ -1,5 +1,5 @@
 /**
- * @module ai/client
+ * @module ai/tool
  *
  * Tools for the models
  *

@@ -1,14 +1,37 @@
+/**
+ * @module ai/messageService
+ *
+ * Chat function for messages
+ *
+ *
+ * Exports:
+ *  - chat
+ *
+ *
+ * @author Ali Zaghloul
+ * @license MIT
+ */
+
 import { generateText, streamText } from "ai";
 import { getGeminiModel } from "./client";
 import { tools } from "./tool";
 import { DEFAULT_SYSTEM } from "./prompt";
 
+/**
+ * Start a single chat with model.
+ *
+ * @param data
+ *   message, stream, userId, and discordId wanted 
+ * @returns
+ *   Response text or stream.
+ */
 export async function chat({
   message,
   stream,
   userId,
   discordId,
 }: {
+  //TODO: make type
   message: string;
   stream: boolean;
   userId?: number;
