@@ -135,7 +135,7 @@ export async function exec_cmd(
       if (!gTitle) return await usage.notes_t.usageMsg(message);
 
       return await getNote(gTitle, message);
-    case "chat":
+    case "ai":
       const res = await msg({
         message: args.join(" "),
         stream: false,

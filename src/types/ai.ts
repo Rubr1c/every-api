@@ -16,6 +16,7 @@ export const userIdSchema = z
     path: ["userId"],
   });
 
+
 export const singleMessageSchema = z
   .object({
     message: z.string(),

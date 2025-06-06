@@ -12,7 +12,6 @@
  * @license MIT
  */
 
-import { z } from "zod";
 import { tool } from "ai";
 import { getUserByDiscordId, getUserById } from "@/lib/user/user";
 import { userIdSchema } from "@/types/ai";
@@ -43,4 +42,5 @@ export const tools = {
       };
     },
   }),
+  
 };

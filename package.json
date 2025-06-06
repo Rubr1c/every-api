@@ -6,8 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+    "build:ui": "cd src/ui && pnpm run build",
+    "start": "concurrently \"node dist/index.js\" \"cd src/ui && pnpm run start\"",
+    "start:api": "node dist/index.js",
+    "start:ui": "cd src/ui && pnpm run dev",
+    "dev": "concurrently \"ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts\" \"cd src/ui && pnpm run dev\"",
+    "dev:api": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "start:bot": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/bot/index.ts",
     "docs": "typedoc"
   },
@@ -17,6 +21,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^22.15.21",
+    "concurrently": "^9.1.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
