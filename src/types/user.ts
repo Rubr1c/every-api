@@ -9,6 +9,12 @@ export const createUserSchema = z.object({
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 
+export const userReqSchema = z.object({
+  userId: z.number(),
+});
+
+export type UserReq = z.infer<typeof userReqSchema>;
+
 export const userDTO = z.object({
   id: z.number(),
   discordId: z.bigint().nullable(),
@@ -20,6 +26,6 @@ export const userDTO = z.object({
 export type UserDTO = z.infer<typeof userDTO>;
 
 export type LevelUpDTO = {
-    leveledup: boolean;
-    level?: number;
-}
+  leveledup: boolean;
+  level?: number;
+};

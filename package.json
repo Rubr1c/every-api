@@ -20,6 +20,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.21",
     "concurrently": "^9.1.2",
     "ts-node": "^10.9.2",
@@ -34,6 +35,7 @@
     "ai": "^4.3.16",
     "discord.js": "^14.19.3",
     "dotenv": "^16.5.0",
+    "jsonwebtoken": "^9.0.2",
     "prisma": "^6.8.2",
     "zod": "^3.25.28"
   }
