@@ -1,20 +1,16 @@
 import type { NextConfig } from "next";
 import path from "path";
+import { loadEnvConfig } from "@next/env";
+
+loadEnvConfig(path.resolve(__dirname, "../.."));
 
 const nextConfig: NextConfig = {
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Add aliases for accessing parent directory modules
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@/api": path.resolve(__dirname, "../types"),
-      "@/utils": path.resolve(__dirname, "../utils"),
-      "@/lib": path.resolve(__dirname, "../lib"),
-      "@/ai": path.resolve(__dirname, "../ai"),
-      "@/bot": path.resolve(__dirname, "../bot"),
-      "@/global": path.resolve(__dirname, "../global"),
-      "@/generated": path.resolve(__dirname, "../generated"),
+      "@": path.resolve(__dirname, ".."),
+      "~": path.resolve(__dirname, "src"),
     };
-
     return config;
   },
 };

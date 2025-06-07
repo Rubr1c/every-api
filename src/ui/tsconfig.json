@@ -18,15 +18,10 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/api/*": ["../types/*"],
-      "@/utils/*": ["../utils/*"],
-      "@/lib/*": ["../lib/*"],
-      "@/ai/*": ["../ai/*"],
-      "@/bot/*": ["../bot/*"],
-      "@/global/*": ["../global/*"],
-      "@/generated/*": ["../generated/*"]
+      "@/*": ["../*", "./src/*"],
+      "~/*": ["./src/*"]
     }
   },
   "include": [

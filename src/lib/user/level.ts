@@ -2,7 +2,7 @@
  * @module lib/user/level
  *
  * Service functions to update user level.
- * 
+ *
  *
  * Exports:
  *  - incrementUserLevel(id)
@@ -80,7 +80,7 @@ export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
  */
 export async function dev_addXpToUser(
   id: bigint,
-  xpCount: bigint,
+  xpCount: bigint
 ): Promise<LevelUpDTO> {
   const user = await prisma.user.update({
     where: {

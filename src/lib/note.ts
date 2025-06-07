@@ -58,7 +58,7 @@ export async function createNote(data: CreateNoteInput): Promise<void> {
  */
 export async function getNoteByTitle(
   userId: number,
-  title: string,
+  title: string
 ): Promise<NoteDTO | null> {
   const note = await prisma.note.findUnique({
     where: { userId_title: { userId, title } },
@@ -116,7 +116,7 @@ export async function getUserNoteCount(userId: number): Promise<number> {
 export async function getUserNotes(
   userId: number,
   page: number = 1,
-  pageSize: number = 10,
+  pageSize: number = 10
 ): Promise<NoteDTO[]> {
   const notes = await prisma.note.findMany({
     where: { userId },
@@ -142,7 +142,7 @@ export async function getUserNotes(
  */
 export async function deleteUserNote(
   userId: number,
-  title: string,
+  title: string
 ): Promise<void> {
   await prisma.note.delete({ where: { userId_title: { userId, title } } });
 }

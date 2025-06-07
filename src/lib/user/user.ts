@@ -41,7 +41,7 @@ export async function createUser(data: CreateUserInput): Promise<void> {
     if (error.code === "P2002" && error.meta?.target?.includes("discordId")) {
       throw new AppError(
         "A user with this Discord ID already exists",
-        "CONFLICT",
+        "CONFLICT"
       );
     }
     // Re-throw other errors
@@ -96,4 +96,3 @@ export async function getUserByDiscordId(id: bigint): Promise<UserDTO> {
 
   return userDTO.parse(user);
 }
-

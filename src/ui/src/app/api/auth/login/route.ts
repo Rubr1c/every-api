@@ -1,5 +1,5 @@
-import { userReqSchema } from "@/api/user";
-import { AppError, STATUS_CODES, StatusCode } from "@/lib/error";
+import { userReqSchema } from "@/types/user";
+import { AppError, STATUS_CODES } from "@/lib/error";
 import { generateToken } from "@/lib/jwts";
 import { getUserById } from "@/lib/user/user";
 import { NextResponse } from "next/server";
