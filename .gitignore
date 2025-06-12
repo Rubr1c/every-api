@@ -55,3 +55,6 @@ docs/
 # DB
 prisma/dev.db
 prisma/dev.db-journal
+
+# Next.js
+.next/
