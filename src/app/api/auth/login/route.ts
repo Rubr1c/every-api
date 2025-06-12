@@ -17,17 +17,7 @@ export async function POST(req: Request) {
 
     const token = generateToken({ userId: user.id });
 
-    return NextResponse.json(
-      {
-        user: {
-          ...user,
-          xp: user.xp.toString(),
-          discordId: user.discordId?.toString(),
-        },
-        token,
-      },
-      { status: STATUS_CODES.OK }
-    );
+    return NextResponse.json({ token }, { status: STATUS_CODES.OK });
   } catch (err) {
     if (err instanceof AppError) {
       return NextResponse.json(

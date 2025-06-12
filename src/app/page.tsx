@@ -1,15 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
+import { api } from '@/global/api/api';
 
 export default function Home() {
   const [userId, setUserId] = useState<number>();
 
   async function login() {
-    const res = await axios.post('/api/auth/login', {
-      id: userId,
-    });
+    if (!userId) return;
+    const res = api.user.get(userId);
 
     console.log(res);
   }
