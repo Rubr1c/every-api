@@ -13,9 +13,9 @@
  * @license MIT
  */
 
-import type { StoreKvInput } from "@/types/kv";
-import { prisma } from "@/global/prisma";
-import { decrypt, encrypt } from "@/lib/utils/encryption";
+import type { StoreKvInput } from '@/types/kv';
+import { prisma } from '@/global/prisma';
+import { decrypt, encrypt } from '@/lib/utils/encryption';
 
 /**
  * Upserts a key to a value.
@@ -34,7 +34,10 @@ export async function kvSet(data: StoreKvInput): Promise<void> {
   await prisma.keyValue.upsert({
     where: { userId_key: { userId: data.userId, key: data.key } },
     create: { ...data, value: value ? value : data.value },
-    update: { value: value ? value : data.value },
+    update: {
+      value: value ?? data.value,
+      isEncrypted: data.isEncrypted,
+    },
   });
 }
 
@@ -50,7 +53,7 @@ export async function kvSet(data: StoreKvInput): Promise<void> {
  */
 export async function kvGet(
   userId: number,
-  key: string,
+  key: string
 ): Promise<string | null> {
   const record = await prisma.keyValue.findUnique({
     where: { userId_key: { userId, key } },

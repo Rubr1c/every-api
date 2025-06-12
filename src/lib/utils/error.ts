@@ -2,7 +2,7 @@
  * @module lib/error
  *
  * AppError class that includes status codes.
- * 
+ *
  *
  * Exports:
  *  - STATUS_CODES
@@ -14,7 +14,6 @@
  * @author Ali Zaghloul
  * @license MIT
  */
-
 
 export const STATUS_CODES = {
   // Informational
@@ -112,21 +111,26 @@ export class AppError extends Error {
   /**
    * Creates an instance of AppError.
    *
-   * @param message 
+   * @param message
    *   A descriptive message explaining the error.
-   * @param statusCodeKey 
+   * @param statusCodeKey
    *   A key from the `StatusCode` enum to map to an HTTP status code.
-   * @param isOperational 
+   * @param isOperational
    *   Whether the error is expected (default: `true`).
    */
-  constructor(message: string, statusCodeKey: StatusCode, isOperational: boolean = true) {
+  constructor(
+    message: string,
+    statusCodeKey: StatusCode,
+    isOperational: boolean = true
+  ) {
     super(message);
     this.statusCode = STATUS_CODES[statusCodeKey];
     this.isOperational = isOperational;
 
     this.name = this.constructor.name;
 
-    Error.captureStackTrace(this, this.constructor);
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(this, this.constructor);
+    }
   }
 }
-

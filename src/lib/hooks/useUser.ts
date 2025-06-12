@@ -4,6 +4,7 @@ import { api } from '@/global/api/api';
 import { UserDTO } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function useUser(): UserDTO | undefined {
   const router = useRouter();
@@ -12,9 +13,9 @@ export function useUser(): UserDTO | undefined {
     queryFn: api.user.get,
   });
 
-  if (isError) {
-    router.push('/login');
-  }
+  useEffect(() => {
+    if (isError) router.push('/login');
+  }, [isError, router]);
 
   return data;
 }

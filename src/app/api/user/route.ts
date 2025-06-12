@@ -21,7 +21,15 @@ export async function GET(req: Request) {
     const token = auth.slice(7);
     tokenSchema.parse({ token });
 
-    const { userId } = verifyToken(token);
+    let userId: number;
+    try {
+      ({ userId } = verifyToken(token));
+    } catch (jwtErr) {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: STATUS_CODES.UNAUTHORIZED }
+      );
+    }
     const user = await getUserById(userId);
 
     const safeUser = {

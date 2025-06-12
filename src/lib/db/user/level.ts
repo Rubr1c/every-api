@@ -2,7 +2,7 @@
  * @module lib/user/level
  *
  * Service functions to update user level.
- * 
+ *
  *
  * Exports:
  *  - incrementUserLevel(id)
@@ -18,9 +18,9 @@
  * @license MIT
  */
 
-import { prisma } from "@/global/prisma";
-import type { LevelUpDTO } from "@/types/user";
-import { hasLeveledUp, levelFromXp, xpForLevel } from "@/lib/utils/levels";
+import { prisma } from '@/global/prisma';
+import type { LevelUpDTO } from '@/types/user';
+import { hasLeveledUp, levelFromXp, xpForLevel } from '@/lib/utils/levels';
 
 /**
  * Increments user level.
@@ -52,17 +52,19 @@ export async function incrementUserLevel(id: bigint): Promise<number> {
  *   An object that contains if the user has leveled up and to what level.
  */
 export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
-  const user = await prisma.user.update({
-    where: {
-      discordId: id,
-    },
-    data: {
-      xp: { increment: 1 },
-    },
-  });
+  const [updated] = await prisma.$transaction([
+    prisma.user.update({
+      where: { discordId: id },
+      data: { xp: { increment: 1 } },
+    }),
+  ]);
 
-  if (hasLeveledUp(user.xp, user.level)) {
-    return { leveledup: true, level: await incrementUserLevel(id) };
+  if (hasLeveledUp(updated.xp, updated.level)) {
+    await prisma.user.update({
+      where: { discordId: id },
+      data: { level: { increment: 1 } },
+    });
+    return { leveledup: true, level: updated.level + 1 };
   }
 
   return { leveledup: false };
@@ -80,7 +82,7 @@ export async function incrementUserXp(id: bigint): Promise<LevelUpDTO> {
  */
 export async function dev_addXpToUser(
   id: bigint,
-  xpCount: bigint,
+  xpCount: bigint
 ): Promise<LevelUpDTO> {
   const user = await prisma.user.update({
     where: {
@@ -92,7 +94,12 @@ export async function dev_addXpToUser(
   });
 
   if (hasLeveledUp(user.xp, user.level)) {
-    return { leveledup: true, level: await incrementUserLevel(id) };
+    const level = levelFromXp(user.xp);
+    await dev_setLevel(id, level);
+    return {
+      leveledup: true,
+      level,
+    };
   }
 
   return { leveledup: false };
