@@ -8,9 +8,7 @@ export default function Home() {
 
   async function login() {
     if (!userId) return;
-    const res = api.user.get(userId);
-
-    console.log(res);
+    const res = api.user.login(userId);
   }
 
   return (

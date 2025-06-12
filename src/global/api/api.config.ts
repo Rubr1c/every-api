@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const ax = axios.create({
-  baseURL: 'api/',
+  baseURL: '/api/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -9,9 +9,14 @@ export const ax = axios.create({
 
 ax.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers = {
+          ...(config.headers ?? {}),
+          Authorization: `Bearer ${token}`,
+        } as typeof config.headers;
+      }
     }
     return config;
   },

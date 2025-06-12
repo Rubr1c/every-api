@@ -1,6 +1,8 @@
-import { ax } from "../api.config";
-
+import { ax } from '../api.config';
 
 export const userApi = {
-    get: async (id: number) => await ax.post('/auth/login', { id }),
-}
+  login: async (id: number) => {
+    const { data } = await ax.post<{ token: string }>('/auth/login', { id });
+    return data;
+  },
+};
