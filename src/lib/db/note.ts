@@ -15,10 +15,10 @@
  * @license MIT
  */
 
-import type { CreateNoteInput, NoteDTO } from "@/types/note";
-import { noteDTO } from "@/types/note";
-import { prisma } from "@/global/prisma";
-import { AppError } from "@/lib/error";
+import type { CreateNoteInput, NoteDTO } from '@/types/note';
+import { noteDTO } from '@/types/note';
+import { prisma } from '@/global/prisma';
+import { AppError } from '@/lib/utils/error';
 
 /**
  * Creates a new note.
@@ -36,8 +36,8 @@ export async function createNote(data: CreateNoteInput): Promise<void> {
       data: { ...data },
     });
   } catch (error: any) {
-    if (error.code === "P2002" && error.meta?.target?.includes("title")) {
-      throw new AppError("A note with this title already exists", "CONFLICT");
+    if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
+      throw new AppError('A note with this title already exists', 'CONFLICT');
     }
 
     throw error;
@@ -58,14 +58,14 @@ export async function createNote(data: CreateNoteInput): Promise<void> {
  */
 export async function getNoteByTitle(
   userId: number,
-  title: string,
+  title: string
 ): Promise<NoteDTO | null> {
   const note = await prisma.note.findUnique({
     where: { userId_title: { userId, title } },
   });
 
   if (!note) {
-    throw new AppError("Note not found", "NOT_FOUND");
+    throw new AppError('Note not found', 'NOT_FOUND');
   }
 
   return note;
@@ -116,14 +116,14 @@ export async function getUserNoteCount(userId: number): Promise<number> {
 export async function getUserNotes(
   userId: number,
   page: number = 1,
-  pageSize: number = 10,
+  pageSize: number = 10
 ): Promise<NoteDTO[]> {
   const notes = await prisma.note.findMany({
     where: { userId },
     skip: (page - 1) * pageSize,
     take: pageSize,
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc',
     },
   });
 
@@ -142,7 +142,7 @@ export async function getUserNotes(
  */
 export async function deleteUserNote(
   userId: number,
-  title: string,
+  title: string
 ): Promise<void> {
   await prisma.note.delete({ where: { userId_title: { userId, title } } });
 }

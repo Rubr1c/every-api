@@ -15,9 +15,9 @@
  * @license MIT
  */
 
-import type { Message } from "discord.js";
-import { getUserByDiscordId } from "@/lib/user/user";
-import { kvGet, kvSet } from "@/lib/kv";
+import type { Message } from 'discord.js';
+import { getUserByDiscordId } from '@/lib/db/user/user';
+import { kvGet, kvSet } from '@/lib/kv';
 
 export interface KeyValueParams {
   e?: [];
@@ -29,7 +29,7 @@ export interface KeyValueParams {
  *
  * @param key
  *   The key to store the value under (string).
- * @param value  
+ * @param value
  *   The value to store (string).
  * @param encrypt
  *   Whether to encrypt the value before storing (boolean).
@@ -42,13 +42,13 @@ export async function setKv(
   key: string,
   value: string,
   encrypt: boolean,
-  message: Message,
+  message: Message
 ): Promise<void> {
   const userId = message.author.id;
 
   const user = await getUserByDiscordId(BigInt(userId));
 
-  await kvSet({ userId: user.id, key, value, isEncrypted: encrypt});
+  await kvSet({ userId: user.id, key, value, isEncrypted: encrypt });
 
   await message.reply(`${key} was set`);
 }
@@ -65,7 +65,7 @@ export async function setKv(
  */
 export async function getKv(
   key: string | null,
-  message: Message,
+  message: Message
 ): Promise<void> {
   if (!key) {
     return;

@@ -12,14 +12,14 @@
  * @license MIT
  */
 
-import { z } from "zod";
-import { tool } from "ai";
-import { getUserByDiscordId, getUserById } from "@/lib/user/user";
-import { userIdSchema } from "@/types/ai";
+import { z } from 'zod';
+import { tool } from 'ai';
+import { getUserByDiscordId, getUserById } from '@/lib/db/user/user';
+import { userIdSchema } from '@/types/ai';
 
 export const tools = {
   userDetails: tool({
-    description: "fetch user details",
+    description: 'fetch user details',
     parameters: userIdSchema,
     execute: async ({ userId, discordId }) => {
       if (userId) {
@@ -39,7 +39,7 @@ export const tools = {
       }
 
       return {
-        error: "no provided user or discord id",
+        error: 'no provided user or discord id',
       };
     },
   }),

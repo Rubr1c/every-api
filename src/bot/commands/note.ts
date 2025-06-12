@@ -24,16 +24,16 @@ import {
   ButtonStyle,
   ComponentType,
   type Message,
-} from "discord.js";
+} from 'discord.js';
 import {
   createNote,
   deleteUserNote,
   getNoteByTitle,
   getUserNoteCount,
   getUserNotes,
-} from "@/lib/note";
-import { getUserByDiscordId } from "@/lib/user/user";
-import { AppError } from "@/lib/error";
+} from '@/lib/db/note';
+import { getUserByDiscordId } from '@/lib/db/user/user';
+import { AppError } from '@/lib/utils/error';
 
 export interface NoteParams {
   t?: string[];
@@ -58,15 +58,15 @@ export interface NoteParams {
 export async function newNote(
   title: string,
   content: string,
-  message: Message,
+  message: Message
 ): Promise<void> {
-  if (title.trim() === "") {
-    message.reply("title can not be empty");
+  if (title.trim() === '') {
+    message.reply('title can not be empty');
     return;
   }
 
-  if (content.trim() === "") {
-    message.reply("content can not be empty");
+  if (content.trim() === '') {
+    message.reply('content can not be empty');
     return;
   }
 
@@ -77,7 +77,7 @@ export async function newNote(
       title,
       content,
     });
-    await message.reply("Created new note!");
+    await message.reply('Created new note!');
   } catch (err) {
     if (err instanceof AppError) {
       await message.reply(`[${err.statusCode}] ${err.message}`);
@@ -108,8 +108,8 @@ export async function getNote(title: string, message: Message): Promise<void> {
   try {
     const note = await getNoteByTitle(id, title);
     const embed = new EmbedBuilder()
-      .setTitle(note?.title ?? "")
-      .setDescription(note?.content.replace("\\n", "\n") ?? "");
+      .setTitle(note?.title ?? '')
+      .setDescription(note?.content.replace('\\n', '\n') ?? '');
     await message.reply({ embeds: [embed] });
   } catch (err) {
     if (err instanceof AppError) {
@@ -134,12 +134,12 @@ export async function getNote(title: string, message: Message): Promise<void> {
  */
 export async function deleteNote(
   title: string,
-  message: Message,
+  message: Message
 ): Promise<void> {
   const { id } = await getUserByDiscordId(BigInt(message.author.id));
   try {
     await deleteUserNote(id, title);
-    await message.reply("Note deleted!");
+    await message.reply('Note deleted!');
   } catch (err) {
     if (err instanceof AppError) {
       await message.reply(`[${err.statusCode}] ${err.message}`);
@@ -170,14 +170,14 @@ export async function getNotesSum(message: Message) {
     const notes = await getUserNotes(id, page, 10);
     const embed = new EmbedBuilder()
       .setTitle(`Your Notes (Page ${page}/${maxPage})`)
-      .setColor("Blurple");
+      .setColor('Blurple');
 
     for (const note of notes) {
       embed.addFields({
         name: note.title,
         value:
           note.content.length > 20
-            ? note.content.slice(0, 20) + "…"
+            ? note.content.slice(0, 20) + '…'
             : note.content,
       });
     }
@@ -187,15 +187,15 @@ export async function getNotesSum(message: Message) {
   function buildRow(page: number) {
     return new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
-        .setCustomId("prev")
-        .setLabel("◀️ Previous")
+        .setCustomId('prev')
+        .setLabel('◀️ Previous')
         .setStyle(ButtonStyle.Primary)
         .setDisabled(page === 1),
       new ButtonBuilder()
-        .setCustomId("next")
-        .setLabel("Next ▶️")
+        .setCustomId('next')
+        .setLabel('Next ▶️')
         .setStyle(ButtonStyle.Primary)
-        .setDisabled(page === maxPage),
+        .setDisabled(page === maxPage)
     );
   }
 
@@ -210,12 +210,12 @@ export async function getNotesSum(message: Message) {
     filter: (btnInt) => btnInt.user.id === message.author.id,
   });
 
-  collector.on("collect", async (btnInt) => {
+  collector.on('collect', async (btnInt) => {
     await btnInt.deferUpdate();
 
-    if (btnInt.customId === "prev" && page > 1) {
+    if (btnInt.customId === 'prev' && page > 1) {
       page--;
-    } else if (btnInt.customId === "next" && page < maxPage) {
+    } else if (btnInt.customId === 'next' && page < maxPage) {
       page++;
     }
 
@@ -225,9 +225,9 @@ export async function getNotesSum(message: Message) {
     });
   });
 
-  collector.on("end", async () => {
+  collector.on('end', async () => {
     const disabledRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      buildRow(page).components.map((btn) => btn.setDisabled(true)),
+      buildRow(page).components.map((btn) => btn.setDisabled(true))
     );
     await embed.edit({ components: [disabledRow] });
   });

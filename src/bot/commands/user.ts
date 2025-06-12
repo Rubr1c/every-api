@@ -14,9 +14,9 @@
  * @license MIT
  */
 
-import type { Message } from "discord.js";
-import { createUser, getUserByDiscordId } from "@/lib/user/user";
-import { AppError } from "@/lib/error";
+import type { Message } from 'discord.js';
+import { createUser, getUserByDiscordId } from '@/lib/db/user/user';
+import { AppError } from '@/lib/utils/error';
 
 /**
  * Creates a new user account for the Discord user who sent the message.
@@ -38,7 +38,7 @@ export async function newUser(message: Message): Promise<void> {
       discordId: BigInt(message.author.id),
       username: message.author.username,
     });
-    await message.reply("User created sucessfully");
+    await message.reply('User created sucessfully');
   } catch (err) {
     if (err instanceof AppError) {
       await message.reply(`[${err.statusCode}] ${err.message}`);
@@ -63,8 +63,10 @@ export async function newUser(message: Message): Promise<void> {
  */
 export async function getUser(message: Message): Promise<void> {
   try {
-      const user = await getUserByDiscordId(BigInt(message.author.id));
-    await message.reply(`${user.username} - [Level ${user.level} - ${user.xp} XP]`);
+    const user = await getUserByDiscordId(BigInt(message.author.id));
+    await message.reply(
+      `${user.username} - [Level ${user.level} - ${user.xp} XP]`
+    );
   } catch (err) {
     if (err instanceof AppError) {
       await message.reply(`[${err.statusCode}] ${err.message}`);
@@ -73,4 +75,3 @@ export async function getUser(message: Message): Promise<void> {
     }
   }
 }
-

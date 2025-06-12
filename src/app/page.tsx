@@ -2,27 +2,18 @@
 
 import { useState } from 'react';
 import { api } from '@/global/api/api';
+import { useUser } from '@/lib/hooks/useUser';
 
 export default function Home() {
-  const [userId, setUserId] = useState<number>();
+  const user = useUser();
 
-  async function login() {
-    if (!userId) return;
-    const res = api.user.login(userId);
+  if (!user) {
+    return null;
   }
 
   return (
-    <main
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <h1>Welcome to Every API Next.js App</h1>
-      <input type="text" onChange={(e) => setUserId(+e.target.value)} />
-      <button onClick={login}>login</button>
-    </main>
+    <div>
+      <h1 className='text-black'>{user.username}</h1>
+    </div>
   );
 }

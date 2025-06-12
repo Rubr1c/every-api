@@ -20,7 +20,7 @@
 
 import { prisma } from "@/global/prisma";
 import type { LevelUpDTO } from "@/types/user";
-import { hasLeveledUp, levelFromXp, xpForLevel } from "@/utils/levels";
+import { hasLeveledUp, levelFromXp, xpForLevel } from "@/lib/utils/levels";
 
 /**
  * Increments user level.

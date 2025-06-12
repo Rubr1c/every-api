@@ -14,8 +14,8 @@
  */
 
 import type { StoreKvInput } from "@/types/kv";
-import { prisma } from "../global/prisma";
-import { decrypt, encrypt } from "./encryption";
+import { prisma } from "@/global/prisma";
+import { decrypt, encrypt } from "@/lib/utils/encryption";
 
 /**
  * Upserts a key to a value.

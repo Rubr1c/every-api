@@ -14,10 +14,10 @@
  * @license MIT
  */
 
-import { prisma } from "@/global/prisma";
-import type { CreateUserInput, UserDTO } from "@/types/user";
-import { userDTO } from "@/types/user";
-import { AppError } from "@/lib/error";
+import { prisma } from '@/global/prisma';
+import type { CreateUserInput, UserDTO } from '@/types/user';
+import { userDTO } from '@/types/user';
+import { AppError } from '@/lib/utils/error';
 
 /**
  * Creates a new user.
@@ -38,10 +38,10 @@ export async function createUser(data: CreateUserInput): Promise<void> {
     });
   } catch (error: any) {
     // Check if it's a Prisma unique constraint violation
-    if (error.code === "P2002" && error.meta?.target?.includes("discordId")) {
+    if (error.code === 'P2002' && error.meta?.target?.includes('discordId')) {
       throw new AppError(
-        "A user with this Discord ID already exists",
-        "CONFLICT",
+        'A user with this Discord ID already exists',
+        'CONFLICT'
       );
     }
     // Re-throw other errors
@@ -67,7 +67,7 @@ export async function getUserById(id: number): Promise<UserDTO> {
   });
 
   if (!user) {
-    throw new AppError("User not found", "NOT_FOUND");
+    throw new AppError('User not found', 'NOT_FOUND');
   }
 
   return userDTO.parse(user);
@@ -91,9 +91,8 @@ export async function getUserByDiscordId(id: bigint): Promise<UserDTO> {
   });
 
   if (!user) {
-    throw new AppError("User not found", "NOT_FOUND");
+    throw new AppError('User not found', 'NOT_FOUND');
   }
 
   return userDTO.parse(user);
 }
-

@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { ZodError, z } from 'zod';
-import { generateToken } from '@/lib/jwts';
-import { getUserById } from '@/lib/user/user';
-import { AppError, STATUS_CODES } from '@/lib/error';
+import { generateToken } from '@/lib/utils/jwts';
+import { getUserById } from '@/lib/db/user/user';
+import { AppError, STATUS_CODES } from '@/lib/utils/error';
 
 const loginSchema = z.object({
   id: z.number().positive(),
